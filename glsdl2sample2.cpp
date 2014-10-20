@@ -72,6 +72,8 @@ int main(int argc, char **argv)
     size_t colorDataOffset = sizeof(triangleVertices) / 2;
     size_t nTriangles = 2;
 
+    float uniform_color[] = {1.0, 0.0, 0.0, 1.0};
+
     GLuint theShaderProgram;
     theShaderProgram = BuildShaderProgram("vs2.glsl", "fs2.glsl");
     if(theShaderProgram == -1)
@@ -111,6 +113,8 @@ int main(int argc, char **argv)
 
         /* drawing code in here! */
         glUseProgram(theShaderProgram);
+
+
         glBindBuffer(GL_ARRAY_BUFFER, triangleBufferObject); //bind the buffer we're applying attributes to
         glEnableVertexAttribArray(0); //0 is our index, refer to "location = 0" in the vertex shader
         glEnableVertexAttribArray(1); //attribute 1 is for vertex color data
@@ -119,6 +123,9 @@ int main(int argc, char **argv)
 
         
         // Attach uniforms
+
+        GLint uniform_color_loc = glGetUniformLocation(theShaderProgram, "uniform_color");
+        glProgramUniform4fv(theShaderProgram, uniform_color_loc, 1, uniform_color);
 
 
         glDrawArrays(GL_TRIANGLES, 0, 3 * nTriangles);
